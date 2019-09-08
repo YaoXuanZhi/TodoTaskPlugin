@@ -1,0 +1,55 @@
+<idea-plugin url="https://github.com/YaoXuanZhi/TodoTaskPlugin">
+  <id>yaoxuanzhi.todoList</id>
+  <name>ToDo Helper</name>
+  <version>1.0</version>
+  <!--<vendor email="yaoxuanzhi@outlook.com" url="https://github.com/YaoXuanZhi/TodoTaskPlugin">耀轩之</vendor>-->
+
+  <description><![CDATA[
+    <p>This is a simple plugin for the todo-workflow.</p>
+    <p>
+    Feel free to file new feature requests as an issue on <a href="https://github.com/YaoXuanZhi/TodoTaskPlugin/issues">GitHub</a>, just like a bug.
+    </p>
+    <p>
+        <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=C344TC8DDC5UN" rel="nofollow">Donate</a> to support the project.
+    </p>
+    ]]>
+  </description>
+
+  <change-notes><![CDATA[
+              <ul>
+              <li>IntelliJ Platform all support</li>
+            </ul>
+    ]]>
+  </change-notes>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+  <!--<idea-version since-build="173.0"/>-->
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+       on how to target different products -->
+  <!-- uncomment to enable plugin in all products
+  <depends>com.intellij.modules.lang</depends>
+  -->
+
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- Add your extensions here -->
+  </extensions>
+
+  <actions>
+      <group id="com.yaoxuanzhi.TodoTask" description = "todo task command">
+        <action id="open" class="OpenTask" text="open task" description="添加任务">
+          <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt I"/>
+        </action>
+        <action id="done" class="DoneTask" text="done task" description="完成任务">
+          <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt K"/>
+        </action>
+        <action id="doing" class="HandTask" text="doing  tasks" description="处理任务">
+          <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt J"/>
+        </action>
+        <action id="cancel" class="CancelTask" text="cancel task" description="取消任务">
+          <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt L"/>
+        </action>
+      </group>
+  </actions>
+
+</idea-plugin>
