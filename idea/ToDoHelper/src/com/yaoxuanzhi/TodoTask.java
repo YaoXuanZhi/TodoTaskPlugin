@@ -80,7 +80,7 @@ public final class TodoTask {
             String newString = TASK_ICONS[v.get(1)];
             boolean result = replaceStringEx(editor, oldString, newString);
             if (result) {
-                showPopupBalloon(editor, "todo进度更新");
+//                showPopupBalloon(editor, "todo进度更新");
                 break;
             }
         }
@@ -112,29 +112,29 @@ public final class TodoTask {
         return true;
     }
 
-    private void replcaceSelectedString(Editor editor, String newString) {
-        Document document = editor.getDocument();
-        Project project = editor.getProject();
-        Caret primaryCaret = editor.getCaretModel().getPrimaryCaret();
-        int start = primaryCaret.getSelectionStart();
-        int end = primaryCaret.getSelectionEnd();
-        // Replace the selection with a fixed string.
-        // Must do this document change in a write action context.
-        WriteCommandAction.runWriteCommandAction(project, () ->
-                document.replaceString(start, end, newString)
-        );
-        primaryCaret.removeSelection();
-    }
+//    private void replcaceSelectedString(Editor editor, String newString) {
+//        Document document = editor.getDocument();
+//        Project project = editor.getProject();
+//        Caret primaryCaret = editor.getCaretModel().getPrimaryCaret();
+//        int start = primaryCaret.getSelectionStart();
+//        int end = primaryCaret.getSelectionEnd();
+//        // Replace the selection with a fixed string.
+//        // Must do this document change in a write action context.
+//        WriteCommandAction.runWriteCommandAction(project, () ->
+//                document.replaceString(start, end, newString)
+//        );
+//        primaryCaret.removeSelection();
+//    }
 
 //  弹出冒泡文本
 //  @refer to [RequestRunnable](https://github.com/a483210/GoogleTranslation/blob/master/src/com/xiuyukeji/plugin/translation/RequestRunnable.java)
-    private void showPopupBalloon(Editor editor, final String result) {
-        ApplicationManager.getApplication().invokeLater(() -> {
-            editor.putUserData(PopupFactoryImpl.ANCHOR_POPUP_POSITION, null);
-            JBPopupFactory factory = JBPopupFactory.getInstance();
-            factory.createHtmlTextBalloonBuilder(result, null, new JBColor(Gray._242, Gray._0), null)
-                    .createBalloon()
-                    .show(factory.guessBestPopupLocation(editor), Balloon.Position.below);
-        });
-   }
+//    private void showPopupBalloon(Editor editor, final String result) {
+//        ApplicationManager.getApplication().invokeLater(() -> {
+//            editor.putUserData(PopupFactoryImpl.ANCHOR_POPUP_POSITION, null);
+//            JBPopupFactory factory = JBPopupFactory.getInstance();
+//            factory.createHtmlTextBalloonBuilder(result, null, new JBColor(Gray._242, Gray._0), null)
+//                    .createBalloon()
+//                    .show(factory.guessBestPopupLocation(editor), Balloon.Position.below);
+//        });
+//   }
 }
