@@ -1,0 +1,6 @@
+[
+    { "keys": ["ctrl+alt+i"], "command": "open_task"},
+    { "keys": ["ctrl+alt+j"], "command": "hand_task"},
+    { "keys": ["ctrl+alt+l"], "command": "cancel_task"},
+    { "keys": ["ctrl+alt+k"], "command": "finish_task"}
+]
