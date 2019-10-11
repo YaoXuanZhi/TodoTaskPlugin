@@ -16,9 +16,14 @@
   </description>
 
   <change-notes><![CDATA[
-              <ul>
+     <p>This plugin generates code from right click 'Generate...' menu while focused
+    on a java/scala class. The output class can be customized using a provided velocity template to format
+    the code based on the origin class and optional selected classes.</p>
+    <p>The following features are available: </p>
+          <ul>
               <li>first release</li>
-            </ul>
+              <li>希望可以减少工作量</li>
+          </ul>
     ]]>
   </change-notes>
 
@@ -28,29 +33,59 @@
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
        on how to target different products -->
-  <!-- uncomment to enable plugin in all products
   <depends>com.intellij.modules.lang</depends>
-  -->
-
-  <extensions defaultExtensionNs="com.intellij">
-    <!-- Add your extensions here -->
-  </extensions>
 
   <actions>
-      <group id="com.yaoxuanzhi.TodoTask" description = "todo task command">
+      <group id="com.yaoxuanzhi.TodoTaskMenu" description = "todo task command">
         <action id="open" class="OpenTask" text="open task" description="添加任务">
           <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt I"/>
+          <!--<add-to-group group-id="GenerateGroup" anchor="last"></add-to-group>-->
+          <add-to-group group-id="GenerateGroup" anchor="after" relative-to-action="JavaGenerateGroup2"/>
         </action>
-        <action id="done" class="DoneTask" text="done task" description="完成任务">
+        <action id="com.yaoxuanzhi.done" class="DoneTask" text="done task" description="完成任务">
           <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt K"/>
+          <add-to-group group-id="GenerateGroup" anchor="last"></add-to-group>
         </action>
-        <action id="doing" class="HandTask" text="doing  tasks" description="处理任务">
+        <action id="com.yaoxuanzhi.doing" class="HandTask" text="doing  tasks" description="处理任务">
           <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt J"/>
+          <add-to-group group-id="GenerateGroup" anchor="last"></add-to-group>
         </action>
-        <action id="cancel" class="CancelTask" text="cancel task" description="取消任务">
+        <action id="com.yaoxuanzhi.cancel" class="CancelTask" text="cancel task" description="取消任务">
           <keyboard-shortcut keymap="$default" first-keystroke="ctrl alt L"/>
+          <add-to-group group-id="GenerateGroup" anchor="last"></add-to-group>
         </action>
       </group>
   </actions>
+
+  <project-components>
+    <component>
+      <implementation-class>com.yaoxuanzhi.MyComponent</implementation-class>
+      <option name="workspace" value="true" />
+    </component>
+  </project-components>
+
+  <application-components>
+    <component>
+      <implementation-class>com.yaoxuanzhi.DemmoSettingState</implementation-class>
+    </component>
+  </application-components>
+
+  <extensions defaultExtensionNs="com.intellij">
+      <!--感觉这两者是可以共存的-->
+      <!--<applicationService serviceImplementation="com.yaoxuanzhi.DemmoSettingState"/>-->
+      <applicationService serviceImplementation="com.yaoxuanzhi.impl.TestServiceImpl"/>
+      <!--<applicationConfigurable groupId="tools" instance="com.yaoxuanzhi.DemoSettingsEditor"/>-->
+    <applicationConfigurable groupId="tools"
+                             displayName="ToDoTaskUI"
+                             id="preferences.todotaskui"
+                             instance="com.yaoxuanzhi.DemoSettingsEditor">
+      <!--<configurable instance="com.tang.intellij.lua.project.CompletionSettingsPanel"
+                    displayName="Emmy Completion"
+                    id="preferences.Lua.Completion"/>-->
+      <!--<configurable instance="com.tang.intellij.lua.luacheck.LuaCheckSettingsPanel"-->
+                    <!--displayName="LuaCheck"-->
+                    <!--id="preferences.LuaCheck"/>-->
+    </applicationConfigurable>
+  </extensions>
 
 </idea-plugin>

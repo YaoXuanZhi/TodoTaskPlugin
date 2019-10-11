@@ -1,3 +1,4 @@
+// - 增加一个JavaGui，专门用来设置 TodoList Settings
 package com.yaoxuanzhi;
 
 import com.intellij.openapi.application.ApplicationManager;
@@ -30,7 +31,7 @@ public final class TodoTask {
     private static final String[] TASK_ICONS = new String[]{"☐", "❑", "✘", "✔"};
 
     public void openTask(Editor editor) {
-        insertTag(editor, "open", "  ");
+        insertTag(editor, "open", " ");
     }
     public void cancelTask(Editor editor) {
         taskCommand(editor, "open", "cancel");
