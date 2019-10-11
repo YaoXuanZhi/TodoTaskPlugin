@@ -18,6 +18,8 @@ import com.intellij.ui.popup.PopupFactoryImpl;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class TodoTask {
     private static final HashMap<String, Integer> TASK_ACTIONS = new HashMap<String, Integer>() {
@@ -97,6 +99,7 @@ public final class TodoTask {
         }
     }
 
+//  采用正则表达式来替换文本
     private boolean replaceStringEx(Editor editor, String oldString, String newString) {
         Document document = editor.getDocument();
         Project project = editor.getProject();
@@ -109,35 +112,24 @@ public final class TodoTask {
         int lineEndOffset = document.getLineEndOffset(lineNum);
         String lineContent = document.getText(new TextRange(lineStartOffset, lineEndOffset));
 
-//      查找被替换的字符串
-        int startOffset = lineContent.indexOf(oldString);
-        if (startOffset < 0) {
-            return false;
+        String pattern = String.format("(%s)", oldString);
+        Pattern regex = Pattern.compile(pattern);
+        Matcher matcher = regex.matcher(lineContent);
+        if (matcher.find()) {
+            String newContent = matcher.replaceFirst(newString);
+
+            if (!lineContent.equals(newContent)) {
+                Runnable runnable = () -> {
+                    document.deleteString(lineStartOffset, lineEndOffset);
+                    document.insertString(lineStartOffset, newContent);
+                };
+                WriteCommandAction.runWriteCommandAction(project, runnable);
+                caretModel.moveToOffset(caretOffset);
+                return true;
+            }
         }
-
-//      计算被编辑器上被替换文本的偏移值
-        int realStartOffset = lineStartOffset + startOffset;
-        int realEndOffset = realStartOffset + oldString.length();
-
-//      调用Api来替换编辑器上的文本
-        Runnable runnable = () -> document.replaceString(realStartOffset, realEndOffset, newString);
-        WriteCommandAction.runWriteCommandAction(project, runnable);
-        return true;
+        return false;
     }
-
-//    private void replcaceSelectedString(Editor editor, String newString) {
-//        Document document = editor.getDocument();
-//        Project project = editor.getProject();
-//        Caret primaryCaret = editor.getCaretModel().getPrimaryCaret();
-//        int start = primaryCaret.getSelectionStart();
-//        int end = primaryCaret.getSelectionEnd();
-//        // Replace the selection with a fixed string.
-//        // Must do this document change in a write action context.
-//        WriteCommandAction.runWriteCommandAction(project, () ->
-//                document.replaceString(start, end, newString)
-//        );
-//        primaryCaret.removeSelection();
-//    }
 
 //  弹出冒泡文本
 //  @refer to [RequestRunnable](https://github.com/a483210/GoogleTranslation/blob/master/src/com/xiuyukeji/plugin/translation/RequestRunnable.java)
