@@ -55,6 +55,9 @@
 
   <extensions defaultExtensionNs="com.intellij">
       <applicationConfigurable groupId="tools" instance="com.yaoxuanzhi.view.ToDoTaskView"/>
+    <!-- T.O.D.O -->
+    <applicationConfigurable groupId="tools" instance="com.yaoxuanzhi.todo_ui.TodoConfigurablePlus" id="preferences.toDoOptionsEx" key="title.todo"
+                             bundle="com.yaoxuanzhi.message.IdeBundlePlus"/>
     <applicationService serviceImplementation="com.yaoxuanzhi.model.ToDoTaskModel"/>
   </extensions>
 
