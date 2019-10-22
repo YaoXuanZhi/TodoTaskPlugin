@@ -1,10 +1,12 @@
+package com.yaoxuanzhi.todo;
+
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.editor.Editor;
-import com.yaoxuanzhi.TodoTask;
+import com.yaoxuanzhi.model.ToDoTaskModel;
 
-public class DoneTask extends AnAction {
+public class OpenTask extends AnAction {
     @Override
     public void actionPerformed(AnActionEvent e) {
         Editor editor = e.getData(PlatformDataKeys.EDITOR);
@@ -12,6 +14,8 @@ public class DoneTask extends AnAction {
             return;
         }
         TodoTask obj = new TodoTask();
-        obj.doneTask(editor);
+        obj.openTask(editor);
+        ToDoTaskModel model = ToDoTaskModel.getInstance();
+        model.resetComponent();
     }
 }

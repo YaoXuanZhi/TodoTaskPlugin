@@ -1,8 +1,9 @@
+package com.yaoxuanzhi.todo;
+
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.editor.Editor;
-import com.yaoxuanzhi.TodoTask;
 
 public class CancelTask extends AnAction {
 

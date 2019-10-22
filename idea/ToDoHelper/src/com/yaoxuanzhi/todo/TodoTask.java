@@ -1,25 +1,20 @@
-package com.yaoxuanzhi;
+package com.yaoxuanzhi.todo;
 
-import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.WriteCommandAction;
-import com.intellij.openapi.editor.Caret;
 import com.intellij.openapi.editor.CaretModel;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.popup.Balloon;
-import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.openapi.util.TextRange;
-import com.intellij.ui.Gray;
-import com.intellij.ui.JBColor;
-import com.intellij.ui.popup.PopupFactoryImpl;
+import com.yaoxuanzhi.model.ToDoTaskModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public final class TodoTask {
-    private static final HashMap<String, Integer> TASK_ACTIONS = new HashMap<String, Integer>(){
+    private static final ToDoTaskModel MODEL = ToDoTaskModel.getInstance();
+    private static final HashMap<String, Integer> TASK_ACTIONS = new HashMap<String, Integer>() {
         {
             put("open", 0);
             put("hand", 1);
@@ -27,57 +22,55 @@ public final class TodoTask {
             put("done", 3);
         }
     };
-    private static final String[] TASK_ICONS = new String[]{"☐", "❑", "✘", "✔"};
 
-    public void openTask(Editor editor) {
-        insertTag(editor, "open", "  ");
+    void openTask(Editor editor) {
+        insertTag(editor, "open", " ");
     }
-    public void cancelTask(Editor editor) {
+
+    void cancelTask(Editor editor) {
         taskCommand(editor, "open", "cancel");
     }
 
-    public void handTask(Editor editor) {
+    void handTask(Editor editor) {
         taskCommand(editor, "open", "hand");
     }
 
-    public void doneTask(Editor editor) {
+    void doneTask(Editor editor) {
         taskCommand(editor, "open", "done");
     }
 
     private void insertTag(Editor editor, String tag, String afterTag) {
-        String currTag = TASK_ICONS[TASK_ACTIONS.get(tag)];
+        int index = TASK_ACTIONS.get(tag);
+        String currTag = MODEL.getTaskTag(index);
 
 //      检查光标所在行的状态
         Document document = editor.getDocument();
         Project project = editor.getProject();
-        CaretModel  caretModel = editor.getCaretModel();
+        CaretModel caretModel = editor.getCaretModel();
 
 //      获取光标所在行首插入
         int caretOffset = caretModel.getOffset();
         int lineNum = document.getLineNumber(caretOffset);
         int lineStartOffset = document.getLineStartOffset(lineNum);
         WriteCommandAction.runWriteCommandAction(project, () ->
-                document.insertString(lineStartOffset, currTag+afterTag)
+                document.insertString(lineStartOffset, currTag + afterTag)
         );
     }
 
-    private List<Integer> createArrayList(Integer a, Integer b) {
-        List<Integer> temp = new ArrayList<Integer>(){};
-        temp.add(a);
-        temp.add(b);
-        return temp;
+    private void addTodoMap(ArrayList<List<Integer>> todoMap, Integer a, Integer b) {
+        todoMap.add(new ArrayList<Integer>() {{add(a);add(b);}});
     }
 
     private void taskCommand(Editor editor, String oldTag, String newTag) {
-        ArrayList<List<Integer>> todoMap = new ArrayList<List<Integer>>(){};
+        ArrayList<List<Integer>> todoMap = new ArrayList<>();
         for (Integer i = TASK_ACTIONS.get(oldTag); i < TASK_ACTIONS.get(newTag); i++) {
-            todoMap.add(createArrayList(i, TASK_ACTIONS.get(newTag)));
+            addTodoMap(todoMap, i, TASK_ACTIONS.get(newTag));
         }
-        todoMap.add(createArrayList(TASK_ACTIONS.get(newTag), TASK_ACTIONS.get(oldTag)));
+        addTodoMap(todoMap, TASK_ACTIONS.get(newTag), TASK_ACTIONS.get(oldTag));
 
         for (List<Integer> v : todoMap) {
-            String oldString = TASK_ICONS[v.get(0)];
-            String newString = TASK_ICONS[v.get(1)];
+            String oldString = MODEL.getTaskTag(v.get(0));
+            String newString = MODEL.getTaskTag(v.get(1));
             boolean result = replaceStringEx(editor, oldString, newString);
             if (result) {
 //                showPopupBalloon(editor, "todo进度更新");
@@ -89,7 +82,7 @@ public final class TodoTask {
     private boolean replaceStringEx(Editor editor, String oldString, String newString) {
         Document document = editor.getDocument();
         Project project = editor.getProject();
-        CaretModel  caretModel = editor.getCaretModel();
+        CaretModel caretModel = editor.getCaretModel();
 
 //      获取光标所在行的文本
         int caretOffset = caretModel.getOffset();
@@ -100,7 +93,9 @@ public final class TodoTask {
 
 //      查找被替换的字符串
         int startOffset = lineContent.indexOf(oldString);
-        if (startOffset < 0) {return false;}
+        if (startOffset < 0) {
+            return false;
+        }
 
 //      计算被编辑器上被替换文本的偏移值
         int realStartOffset = lineStartOffset + startOffset;
