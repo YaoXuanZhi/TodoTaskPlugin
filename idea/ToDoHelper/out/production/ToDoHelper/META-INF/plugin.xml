@@ -55,7 +55,13 @@
 
   <extensions defaultExtensionNs="com.intellij">
       <applicationConfigurable groupId="tools" instance="com.yaoxuanzhi.view.ToDoTaskView"/>
+    <!-- T.O.D.O -->
+    <applicationConfigurable groupId="tools" instance="com.yaoxuanzhi.todo_ui.TodoConfigurablePlus" id="preferences.toDoOptionsEx" key="title.todo"
+                             bundle="com.yaoxuanzhi.message.IdeBundlePlus"/>
     <applicationService serviceImplementation="com.yaoxuanzhi.model.ToDoTaskModel"/>
+    <!-- External Tools -->
+    <applicationConfigurable groupId="tools" groupWeight="140" instance="com.yaoxuanzhi.tool.ToolConfigurablePlus" id="preferences.externalToolsEx" key="tools.settings.title"
+                             bundle="com.yaoxuanzhi.message.IdeBundlePlus"/>
   </extensions>
 
 </idea-plugin>
