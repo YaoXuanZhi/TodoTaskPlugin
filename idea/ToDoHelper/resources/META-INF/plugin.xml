@@ -31,9 +31,16 @@
   <depends>com.intellij.modules.lang</depends>
 
   <extensions defaultExtensionNs="com.intellij">
-    <!--<applicationConfigurable groupId="editor" instance="com.yaoxuanzhi.ui.ToDoTaskSettings"/>-->
-    <applicationConfigurable groupId="tools" instance="com.yaoxuanzhi.ui.ToDoTaskSettings"/>
+    <!--<applicationConfigurable groupId="editor" instance="com.yaoxuanzhi.ui.ToDoTaskControllerler/>-->
+    <applicationConfigurable groupId="tools" instance="com.yaoxuanzhi.ui.ToDoTaskController"/>
   </extensions>
+
+  <!--<application-components>-->
+    <!--<component>-->
+      <!--<implementation-class>com.yaoxuanzhi.ui.ToDoTaskController</implementation-class>-->
+      <!--&lt;!&ndash;<interface-class>UnregisteredApplicationComponentInterface</interface-class>&ndash;&gt;-->
+    <!--</component>-->
+  <!--</application-components>-->
 
   <actions>
       <group id="com.yaoxuanzhi.TodoTask" description = "todo task command">

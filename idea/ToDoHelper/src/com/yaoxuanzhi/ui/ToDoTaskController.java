@@ -1,16 +1,20 @@
+// 引入可编辑的工具和行为吧，支持自定义设置这些功能
+// 并且引入正则表达式来说明它们的作用
 package com.yaoxuanzhi.ui;
 
+import com.intellij.openapi.components.BaseComponent;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.ui.IdeBorderFactory;
 
 import javax.swing.*;
-import java.awt.*;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ToDoTaskSettings implements Configurable {
+import java.util.List;
+
+public class ToDoTaskController implements Configurable {
+
     @NotNull
     @Nls
     @Override
@@ -27,7 +31,7 @@ public class ToDoTaskSettings implements Configurable {
     @Nullable
     @Override
     public JComponent createComponent() {
-        return myPanel;
+        return myRoot;
     }
 
     @Override
@@ -37,24 +41,25 @@ public class ToDoTaskSettings implements Configurable {
 
     @Override
     public void apply() throws ConfigurationException {
+        List<ToDoTaskModel.RewriteRule> items = myRoot.getUserData();
+        System.out.printf("=========> %d\n", items.size());
     }
 
     @Override
     public void reset() {
+//        myRoot.resetUserData();
+        myRoot.initUI();
     }
 
     @Override
     public void disposeUIResources() {
+        System.out.println("ui dispose\n");
     }
 
-    @NotNull private final TodoTaskSettingsPanel myPanel = new TodoTaskSettingsPanel();
-    private static final class TodoTaskSettingsPanel extends JPanel {
-        public TodoTaskSettingsPanel() {
-            setLayout(new BorderLayout());
-            final JPanel conflictsPanel = new JPanel(new BorderLayout());
-            final String title = String.format("Please set the ToDo-Icon style below:");
-            conflictsPanel.setBorder(IdeBorderFactory.createTitledBorder(title, false));
-            add(conflictsPanel, BorderLayout.CENTER);
-        }
-    }
+//    @Override
+//    public void initComponent() {
+//        myRoot.initUI();
+//    }
+
+    @NotNull private final ToDoTaskView myRoot = new ToDoTaskView();
 }
